@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UIElements;
 
 public class itemGenerator : MonoBehaviour{
       
@@ -21,13 +22,15 @@ public class itemGenerator : MonoBehaviour{
     [SerializeField] private float xAppear;
     [SerializeField] private float yAppear;
     [SerializeField] private float zAppear;
-
+    private Transform my_transform;
     void generateNextTime(){
         num = rnd.NextDouble();
         waitTime += (-Math.Log(1 - num) / lambda);
     }
 
     void Start() {
+        my_transform = GetComponent<Transform>();
+
         lambda = 1 / arrival_average;
         generateNextTime();
         Debug.Log("Item appeared at: " + waitTime);
@@ -37,7 +40,7 @@ public class itemGenerator : MonoBehaviour{
     void Update(){
         timer += Time.deltaTime;
         if (waitTime < timer){
-            Instantiate(item, new Vector3(xAppear, yAppear, zAppear), Quaternion.identity);
+            Instantiate(item, new Vector3(my_transform.position.x, my_transform.position.y-1, my_transform.position.z), Quaternion.identity);
             itemsArrived.Enqueue(waitTime);
             Debug.Log("Item appeared at: " + waitTime);
             generateNextTime();

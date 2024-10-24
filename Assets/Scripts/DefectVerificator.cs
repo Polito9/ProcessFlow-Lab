@@ -8,14 +8,9 @@ public class DefectVerificator : MonoBehaviour
 {
     private System.Random rnd = new System.Random();
 
-   private InverseGaussian inverse = new InverseGaussian(5, 1);    
+    private InverseGaussian inverse = new InverseGaussian(5, 1);    
 
     private double randNum;
-    void Start()
-    {
-        randNum = inverse.Sample();
-        Debug.Log("My rand is: "+randNum);
-    }
 
     private void OnCollisionEnter(Collision collision) {
        randNum = inverse.Sample();
