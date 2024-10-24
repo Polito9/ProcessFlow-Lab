@@ -27,9 +27,9 @@ public class DefectVerificator : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision) {
-
-        Debug.Log("My rand is: "+randNum);
         if (collision.gameObject.tag == "Item") {
+            randNum = inverse.Sample();
+            Debug.Log("My rand is: " + randNum);
             Debug.Log("An item arrived to verification");
             Destroy(collision.gameObject);
             objects_verificating++;
