@@ -30,7 +30,7 @@ public class itemGenerator : MonoBehaviour{
     void Start() {
         lambda = 1 / arrival_average;
         generateNextTime();
-        Debug.Log("First time at: " + waitTime);
+        Debug.Log("Item appeared at: " + waitTime);
     }
 
     // Update is called once per frame
@@ -39,7 +39,7 @@ public class itemGenerator : MonoBehaviour{
         if (waitTime < timer){
             Instantiate(item, new Vector3(xAppear, yAppear, zAppear), Quaternion.identity);
             itemsArrived.Enqueue(waitTime);
-            Debug.Log("Item arrived at: " + waitTime);
+            Debug.Log("Item appeared at: " + waitTime);
             generateNextTime();
         }
     }
