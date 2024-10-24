@@ -30,7 +30,7 @@ public class itemGenerator : MonoBehaviour{
         //Generating the first arrival
         lambda = 1 / arrival_average;
         generateNextTime();
-        Debug.Log("Item appeared at: " + waitTime);
+        //Debug.Log("Item appeared at: " + waitTime);
     }
 
     
@@ -42,7 +42,7 @@ public class itemGenerator : MonoBehaviour{
         if (waitTime < timer){
             //This means the item can appear
             Instantiate(item, new Vector3(my_transform.position.x, my_transform.position.y-1, my_transform.position.z), Quaternion.identity);
-            Debug.Log("Item appeared at: " + waitTime);
+            //Debug.Log("Item appeared at: " + waitTime);
             generateNextTime();
         }
     }

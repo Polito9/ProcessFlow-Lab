@@ -8,8 +8,10 @@ public class DefectVerificator : MonoBehaviour
 {
     //To generate the random values in using the normal distribution
     private System.Random rnd = new System.Random();
-    private InverseGaussian inverse = new InverseGaussian(5, 1);    
+    private Normal normal_dist = new Normal(5, 1);
     private double randNum;
+    private double time_to_process;
+
 
     //Probability that the item has a defect
     [SerializeField] double probability_defect = 0.5;
@@ -18,6 +20,8 @@ public class DefectVerificator : MonoBehaviour
     private double timer;
     private double waitTime = 0;
 
+    
+    Queue<double> queue = new Queue<double>();
     int objects_verificating = 0;
 
     private void Update() {
@@ -28,13 +32,13 @@ public class DefectVerificator : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag == "Item") {
-            randNum = inverse.Sample();
-            Debug.Log("My rand is: " + randNum);
-            Debug.Log("An item arrived to verification");
+            randNum = rnd.NextDouble();
+            time_to_process = normal_dist.InverseCumulativeDistribution(randNum);
+            Debug.Log("An item arrived to verification: "+randNum);
+            queue.Enqueue(time_to_process);
             Destroy(collision.gameObject);
             objects_verificating++;
-
+            Debug.Log(time_to_process);
         }
     }
-
 }
