@@ -6,23 +6,19 @@ using UnityEngine.UIElements;
 
 public class itemGenerator : MonoBehaviour{
       
+    //For the random system
     private System.Random rnd = new System.Random();
     private double num;
     [SerializeField] private double arrival_average;
     private double lambda;
-    private double waitTime = 0;
-
-    private double timer = 0;
-
-    //The queue to save the data generated each interaction
-    private Queue<double> itemsArrived = new Queue<double>();
 
     //Prefab of item
     [SerializeField] private GameObject item;
-    [SerializeField] private float xAppear;
-    [SerializeField] private float yAppear;
-    [SerializeField] private float zAppear;
     private Transform my_transform;
+
+    //For the timer
+    private double timer;
+    private double waitTime = 0;
     void generateNextTime(){
         num = rnd.NextDouble();
         waitTime += (-Math.Log(1 - num) / lambda);
@@ -31,17 +27,21 @@ public class itemGenerator : MonoBehaviour{
     void Start() {
         my_transform = GetComponent<Transform>();
 
+        //Generating the first arrival
         lambda = 1 / arrival_average;
         generateNextTime();
         Debug.Log("Item appeared at: " + waitTime);
     }
 
-    // Update is called once per frame
+    
     void Update(){
-        timer += Time.deltaTime;
+        if (TimerManager.Instance != null) {
+            //The instance exists
+            timer = TimerManager.Instance.getActualTime();
+        }
         if (waitTime < timer){
+            //This means the item can appear
             Instantiate(item, new Vector3(my_transform.position.x, my_transform.position.y-1, my_transform.position.z), Quaternion.identity);
-            itemsArrived.Enqueue(waitTime);
             Debug.Log("Item appeared at: " + waitTime);
             generateNextTime();
         }
