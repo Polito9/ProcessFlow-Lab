@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 public class itemGenerator : MonoBehaviour{
-    // Start is called before the first frame update    
+      
     private System.Random rnd = new System.Random();
     private double num;
     [SerializeField] private double arrival_average;
@@ -14,7 +14,13 @@ public class itemGenerator : MonoBehaviour{
     private double timer = 0;
 
     //The queue to save the data generated each interaction
-    private Queue<double> queue = new Queue<double>();
+    private Queue<double> itemsArrived = new Queue<double>();
+
+    //Prefab of item
+    [SerializeField] private GameObject item;
+    [SerializeField] private float xAppear;
+    [SerializeField] private float yAppear;
+    [SerializeField] private float zAppear;
 
     void generateNextTime(){
         num = rnd.NextDouble();
@@ -31,7 +37,8 @@ public class itemGenerator : MonoBehaviour{
     void Update(){
         timer += Time.deltaTime;
         if (waitTime < timer){
-            queue.Enqueue(waitTime);
+            Instantiate(item, new Vector3(xAppear, yAppear, zAppear), Quaternion.identity);
+            itemsArrived.Enqueue(waitTime);
             Debug.Log("Item arrived at: " + waitTime);
             generateNextTime();
         }
