@@ -14,11 +14,15 @@ public class itemGenerator : MonoBehaviour{
 
     //Prefab of item
     [SerializeField] private GameObject item;
+
+    //Transform of the generator
     private Transform my_transform;
 
     //For the timer
     private double timer;
     private double waitTime = 0;
+
+    
     void generateNextTime(){
         num = rnd.NextDouble();
         waitTime += (-Math.Log(1 - num) / lambda);

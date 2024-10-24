@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using MathNet.Numerics.Distributions;
+using UnityEngine.Rendering;
 
 public class DefectVerificator : MonoBehaviour
 {
@@ -20,25 +21,48 @@ public class DefectVerificator : MonoBehaviour
     private double timer;
     private double waitTime = 0;
 
-    
+
+    //To manage the objects in queue
+    bool is_ready = true; //Bool to check if the machine is ready to process an object
     Queue<double> queue = new Queue<double>();
     int objects_verificating = 0;
+    double actual_process_time; //Axiliar to save the time the objet will take to verify
 
     private void Update() {
         if(TimerManager.Instance != null) {
             timer = TimerManager.Instance.getActualTime();
+            //Debug.Log("The timer from verificator is: "+timer);
+        }
+
+        //Verifying if the object can be processed and there are objects to be processed
+        if (is_ready && queue.Count > 0) {
+            is_ready = false;
+            actual_process_time = queue.Dequeue();
+            waitTime = timer + actual_process_time;
+            Debug.Log("An item is being verified and it will take: " + actual_process_time);
+        }
+
+        if (waitTime < timer && !is_ready) {
+            //The object has finished from being verified
+            Debug.Log("The item has been verified in: "+timer);
+            objects_verificating--;
+            is_ready = true;
         }
     }
 
     private void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag == "Item") {
+            //Generating the time the object will take to process
             randNum = rnd.NextDouble();
             time_to_process = normal_dist.InverseCumulativeDistribution(randNum);
-            Debug.Log("An item arrived to verification: "+randNum);
+            Debug.Log("An item arrived to verification");
+            
+            //Added the object time to the queue
             queue.Enqueue(time_to_process);
-            Destroy(collision.gameObject);
             objects_verificating++;
-            Debug.Log(time_to_process);
+
+            //Deleting the object from the scene
+            Destroy(collision.gameObject);
         }
     }
 }

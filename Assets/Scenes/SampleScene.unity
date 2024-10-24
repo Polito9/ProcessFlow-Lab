@@ -2056,7 +2056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c33e94dfadfba1344888da5bfbf63258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrival_average: 8
+  arrival_average: 5
   item: {fileID: 6382415150560894044, guid: fbc863710cda61c43a979c61bcc2a615, type: 3}
 --- !u!1 &2047585285
 GameObject:
