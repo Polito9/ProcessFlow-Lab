@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4277a891c746704096c80680ce9a4e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  probability_defect: 0.2
+  probability_defect: 0.4
 --- !u!1 &347832460
 GameObject:
   m_ObjectHideFlags: 0

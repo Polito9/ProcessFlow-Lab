@@ -13,6 +13,8 @@ public class DefectVerificator : MonoBehaviour
     private double randNum;
     private double time_to_process;
 
+    //The transform of the Verificator
+    private Transform my_transform;
 
     //Probability that the item has a defect
     [SerializeField] double probability_defect = 0.4;
@@ -28,6 +30,10 @@ public class DefectVerificator : MonoBehaviour
     int objects_verificating = 0;
     double actual_process_time; //Axiliar to save the time the objet will take to verify
 
+    private void Start() {
+        my_transform = GetComponent<Transform>();
+    }
+
     private void Update() {
         if(TimerManager.Instance != null) {
             timer = TimerManager.Instance.getActualTime();
@@ -42,20 +48,22 @@ public class DefectVerificator : MonoBehaviour
             Debug.Log("An item is being verified and it will take: " + actual_process_time);
         }
 
+        //Checking if there is an object being verifiend and it has finished
         if (waitTime < timer && !is_ready) {
             //The object has finished from being verified
-            Debug.Log("The item has been verified in: "+timer);
             objects_verificating--;
             is_ready = true;
               
             randNum = rnd.NextDouble();
             if(randNum <= probability_defect) {
                 //It has a defect
-
+                Debug.Log("An item with a defect has been verified ");
+                ItemGenerator.Instance.generateItem(my_transform.position.x+1, my_transform.position.y, my_transform.position.z);
             }
             else {
                 //It does not have a defect
-
+                Debug.Log("An item with NO defect has been verified ");
+                ItemGenerator.Instance.generateItem(my_transform.position.x, my_transform.position.y, my_transform.position.z+1);
             }
         }
     }
