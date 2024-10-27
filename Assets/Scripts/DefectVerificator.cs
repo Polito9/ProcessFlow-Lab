@@ -3,18 +3,25 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using MathNet.Numerics.Distributions;
+using TMPro;
 
 
 public class DefectVerificator : MonoBehaviour
 {
     //To generate the random values in using the normal distribution
     private System.Random rnd = new System.Random();
-    private Normal normal_dist = new Normal(5, 1);
+    [SerializeField] private double mean = 5;
+    [SerializeField] private double stddev = 1;
+
+    private Normal normal_dist;
     private double randNum;
     private double time_to_process;
 
     //The transform of the Verificator
     private Transform my_transform;
+
+    //The textMeshPro to show the counter
+    [SerializeField]private TextMeshPro tmp;
 
     //Probability that the item has a defect
     [SerializeField] double probability_defect = 0.4;
@@ -31,6 +38,9 @@ public class DefectVerificator : MonoBehaviour
     double actual_process_time; //Axiliar to save the time the objet will take to verify
 
     private void Start() {
+        normal_dist = new Normal(mean, stddev);
+        tmp = tmp.GetComponent<TextMeshPro>();
+        CounterManager.Instance.CreateNewCounter(tmp);
         my_transform = GetComponent<Transform>();
     }
 
@@ -51,9 +61,13 @@ public class DefectVerificator : MonoBehaviour
         //Checking if there is an object being verifiend and it has finished
         if (waitTime < timer && !is_ready) {
             //The object has finished from being verified
-            objects_verificating--;
+            
             is_ready = true;
-              
+
+            //Update the counter
+            objects_verificating--;
+            CounterManager.Instance.UpdateCounter(tmp, objects_verificating);
+
             randNum = rnd.NextDouble();
             if(randNum <= probability_defect) {
                 //It has a defect
@@ -77,7 +91,10 @@ public class DefectVerificator : MonoBehaviour
             
             //Added the object time to the queue
             queue.Enqueue(time_to_process);
+            
+            //Update the counter
             objects_verificating++;
+            CounterManager.Instance.UpdateCounter(tmp, objects_verificating);
 
             //Deleting the object from the scene
             Destroy(collision.gameObject);
