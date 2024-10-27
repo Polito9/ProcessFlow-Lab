@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+
 using UnityEngine;
 using MathNet.Numerics.Distributions;
-using UnityEngine.Rendering;
+
 
 public class DefectVerificator : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class DefectVerificator : MonoBehaviour
 
 
     //Probability that the item has a defect
-    [SerializeField] double probability_defect = 0.5;
+    [SerializeField] double probability_defect = 0.4;
 
     //For the timer
     private double timer;
@@ -47,6 +47,16 @@ public class DefectVerificator : MonoBehaviour
             Debug.Log("The item has been verified in: "+timer);
             objects_verificating--;
             is_ready = true;
+              
+            randNum = rnd.NextDouble();
+            if(randNum <= probability_defect) {
+                //It has a defect
+
+            }
+            else {
+                //It does not have a defect
+
+            }
         }
     }
 
