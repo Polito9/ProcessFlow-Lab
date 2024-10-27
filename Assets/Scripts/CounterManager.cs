@@ -19,7 +19,7 @@ public class CounterManager : MonoBehaviour{
 
     public void CreateNewCounter(TextMeshPro tmp) {
         if (!counters.ContainsKey(tmp)) {
-            Debug.Log("A new counter has been generated");
+            //Debug.Log("A new counter has been generated");
             counters[tmp] = 0;
         }
     }
@@ -29,7 +29,7 @@ public class CounterManager : MonoBehaviour{
         counters[tmp] = new_val;
         
         if(tmp != null) {
-            Debug.Log("The text has been updated");
+            //Debug.Log("The text has been updated");
             tmp.text = counters[tmp].ToString();
         }
 

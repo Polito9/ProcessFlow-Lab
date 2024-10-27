@@ -39,7 +39,6 @@ public class DefectVerificator : MonoBehaviour
 
     private void Start() {
         normal_dist = new Normal(mean, stddev);
-        tmp = tmp.GetComponent<TextMeshPro>();
         CounterManager.Instance.CreateNewCounter(tmp);
         my_transform = GetComponent<Transform>();
     }
