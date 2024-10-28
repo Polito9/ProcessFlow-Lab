@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class TypeObjectVerificator : MonoBehaviour
 {
-    //THIS SCRIPT WITH THE DEFECTVERIFICATOR.CS NEEDS TO MERGE IN ONE AND USE A CLASS TO GENERATE DISTRIBUTIONS
+    //THIS SCRIPT WITH THE DEFECTVERIFICATOR.CS NEEDS TO MERGE IN ONE AND USE A CLASS TO MANAGE DISTRIBUTIONS
 
     //For the Uniform Distribution and random system
     [SerializeField] private double a;
@@ -18,6 +18,9 @@ public class TypeObjectVerificator : MonoBehaviour
     //For the timer
     private double timer = 0;
     private double waitTime = 0;
+
+    //The transform of the Verificator
+    private Transform my_transform;
 
     //The textMeshPro to show the counter
     [SerializeField] private TextMeshPro tmp;
@@ -34,6 +37,7 @@ public class TypeObjectVerificator : MonoBehaviour
 
     private void Start() {
         CounterManager.Instance.CreateNewCounter(tmp);
+        my_transform = GetComponent<Transform>();
     }
 
     void Update()
@@ -59,17 +63,30 @@ public class TypeObjectVerificator : MonoBehaviour
             objects_verificating--;
             CounterManager.Instance.UpdateCounter(tmp, objects_verificating);
 
+
+            /*
+            3.484
+            2.596
+            -12.63
+            
+             4.286
+            2.183
+            -12.806
+             */
             num = rnd.NextDouble();
             if (num <= probability_defect_A) {
                 //It has a defect
                 Debug.Log("The object has defect A");
+                ItemGenerator.Instance.generateItem(my_transform.position.x, my_transform.position.y, my_transform.position.z-1);
             }
             else if (num <= (probability_defect_A + probability_defect_B)) {
                 //It does not have a defect
                 Debug.Log("The object has a defect B");
+                ItemGenerator.Instance.generateItem(my_transform.position.x + 1, my_transform.position.y, my_transform.position.z);
             }
             else {
                 Debug.Log("The object has a defect C");
+                ItemGenerator.Instance.generateItem(my_transform.position.x, my_transform.position.y, my_transform.position.z + 1);
             }
         }
     }
